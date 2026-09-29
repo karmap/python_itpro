@@ -1,11 +1,14 @@
-# Clase 4 — Construyendo un servidor HTTP desde cero
+# Clase 10: Servidor HTTP desde cero
 
-**Duración:** 2 horas  
+**Duración:** 2 horas
+
+
+> Los bloques de desarrollo se leen en orden dentro de cada ejemplo. Las plantillas con `...` se completan en las actividades; las cheat sheets reúnen operaciones independientes. Los programas completos incluyen sus imports.
 **Objetivo:** entender cómo funciona un servidor HTTP construyendo uno simple con Python, consumirlo desde otro programa, probarlo con `curl` y abrirlo desde el navegador.
 
 ---
 
-# 1. ¿Qué vamos a construir?
+## 1. ¿Qué vamos a construir?
 
 Hasta ahora:
 
@@ -61,12 +64,25 @@ cliente
 
 ---
 
-# 2. Primer servidor HTTP
+## 2. Primer servidor HTTP
+
+### Clases y métodos que vamos a usar
+
+`class Handler(BaseHTTPRequestHandler)` define una clase que hereda el comportamiento HTTP de otra. Un método es una función dentro de la clase; `self` representa la instancia que atiende la petición. La biblioteca crea esa instancia y llama a `do_GET()` cuando recibe GET. No necesitamos desarrollar una clase completa desde cero.
+
+Una clase describe un tipo de objeto y una instancia es un objeto concreto de ese tipo. Heredar permite reutilizar sus métodos y reemplazar uno, como `do_GET()`, con nuestro comportamiento. `HTTPServer(("localhost", 8000), Handler)` crea el objeto servidor: recibe una tupla con dirección y puerto, y la clase que usará para atender peticiones. Pasamos `Handler` sin paréntesis porque la biblioteca creará las instancias.
+
+El cuerpo se transmite como `bytes`, una secuencia de datos binarios. `b"Hola"` es un literal de bytes para texto ASCII; una cadena con acentos se convierte con `.encode("utf-8")`. La operación inversa es `.decode("utf-8")`. El JSON es texto antes de esa conversión.
+
+Los métodos `enviar_json()` y `do_GET()` de los fragmentos siguientes deben ir dentro de `Handler`. Cada versión completa de `server.py` reemplaza la anterior. Reinicia con Ctrl+C y `python server.py` después de cambiar el código.
+
+Este servidor es una demostración local para entender HTTP; no lo publicaremos como servidor de producción.
 
 Python incluye herramientas para crear un servidor HTTP básico sin instalar librerías externas.
 
 ```python
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from urllib.parse import urlsplit
 ```
 
 Crea:
@@ -77,6 +93,7 @@ server.py
 
 ```python
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from urllib.parse import urlsplit
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -90,14 +107,19 @@ class Handler(BaseHTTPRequestHandler):
         )
 
 
-server = HTTPServer(
-    ("localhost", 8000),
-    Handler
-)
+def main():
+    server = HTTPServer(("localhost", 8000), Handler)
+    print("Servidor corriendo en http://localhost:8000")
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print("\nServidor detenido")
+    finally:
+        server.server_close()
 
-print("Servidor corriendo en http://localhost:8000")
 
-server.serve_forever()
+if __name__ == "__main__":
+    main()
 ```
 
 Ejecuta:
@@ -106,11 +128,15 @@ Ejecuta:
 python server.py
 ```
 
+La respuesta se construye en este orden: `send_response(200)` establece el estado; `send_header()` añade cabeceras si las hay; `end_headers()` termina esa sección; `wfile.write()` escribe el cuerpo como bytes. `wfile` es el flujo de salida al cliente; `rfile` será el flujo de entrada para leer un cuerpo POST.
+
+`serve_forever()` mantiene el servidor escuchando. Ctrl+C genera `KeyboardInterrupt`; `finally` llama a `server_close()` para liberar el puerto, siguiendo el patrón de la clase 06.
+
 El programa se queda ejecutándose porque está esperando requests.
 
 ---
 
-# 3. `localhost` y puerto
+## 3. `localhost` y puerto
 
 ```text
 localhost
@@ -145,7 +171,7 @@ Computadora
 
 ---
 
-# 4. Probar desde el navegador
+## 4. Probar desde el navegador
 
 Abre:
 
@@ -163,6 +189,7 @@ El servidor ejecuta:
 
 ```python
 def do_GET(self):
+    ...
 ```
 
 y responde:
@@ -194,7 +221,7 @@ Browser
 
 ---
 
-# 5. Status code
+## 5. Código de estado
 
 ```python
 self.send_response(200)
@@ -218,12 +245,13 @@ Otros códigos comunes:
 
 ---
 
-# 6. Headers y JSON
+## 6. Headers (cabeceras) y JSON
 
 Modifica el servidor:
 
 ```python
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from urllib.parse import urlsplit
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -243,14 +271,19 @@ class Handler(BaseHTTPRequestHandler):
         )
 
 
-server = HTTPServer(
-    ("localhost", 8000),
-    Handler
-)
+def main():
+    server = HTTPServer(("localhost", 8000), Handler)
+    print("Servidor corriendo en http://localhost:8000")
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print("\nServidor detenido")
+    finally:
+        server.server_close()
 
-print("Servidor corriendo en http://localhost:8000")
 
-server.serve_forever()
+if __name__ == "__main__":
+    main()
 ```
 
 Ahora enviamos:
@@ -263,7 +296,7 @@ para indicar que el body es JSON.
 
 ---
 
-# 7. ¿Por qué `b"..."`?
+## 7. ¿Por qué `b"..."`?
 
 ```python
 b"Hola"
@@ -295,9 +328,11 @@ Resultado:
 
 ---
 
-# 8. Probar con `curl`
+## 8. Probar con `curl`
 
 En otra terminal:
+
+Los comandos `curl` mostrados usan Bash/zsh. En Windows utiliza `curl.exe` si `curl` es un alias de PowerShell.
 
 ```bash
 curl http://localhost:8000
@@ -336,7 +371,7 @@ BODY
 
 ---
 
-# 9. Consumir desde otro programa Python
+## 9. Consumir desde otro programa Python
 
 Crea:
 
@@ -349,9 +384,11 @@ import requests
 
 
 response = requests.get(
-    "http://localhost:8000"
+    "http://localhost:8000",
+    timeout=10
 )
 
+response.raise_for_status()
 print(response.status_code)
 print(response.text)
 ```
@@ -371,7 +408,7 @@ Salida:
 
 ---
 
-# 10. Convertir JSON a Python
+## 10. Convertir JSON a Python
 
 ```python
 data = response.json()
@@ -407,14 +444,14 @@ requests.get() ────────────────→ do_GET()
 
 ---
 
-# Actividad 1 — Cambiar la respuesta
+## Actividad 1: Cambiar la respuesta
 
 Modifica el servidor para devolver:
 
 ```json
 {
     "curso": "Python",
-    "clase": 4,
+    "clase": 10,
     "tema": "HTTP Server",
     "activo": true
 }
@@ -435,7 +472,9 @@ HTTP Server
 
 ---
 
-# 11. Generar JSON con Python
+## 11. Recordatorio de JSON y conversión a bytes
+
+Ya usamos `json.dumps()` en la clase 08. La novedad es codificar su texto en bytes para escribirlo en la respuesta HTTP.
 
 No queremos construir JSON a mano:
 
@@ -467,7 +506,7 @@ Todavía es `str`.
 El servidor necesita bytes:
 
 ```python
-body = json.dumps(data).encode()
+body = json.dumps(data).encode("utf-8")
 ```
 
 Flujo:
@@ -479,7 +518,7 @@ json.dumps()
  ↓
 str
  ↓
-.encode()
+.encode("utf-8")
  ↓
 bytes
  ↓
@@ -488,10 +527,11 @@ HTTP Response
 
 ---
 
-# 12. Servidor usando `json.dumps()`
+## 12. Servidor usando `json.dumps()`
 
 ```python
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from urllib.parse import urlsplit
 import json
 
 
@@ -504,7 +544,7 @@ class Handler(BaseHTTPRequestHandler):
             "version": 1
         }
 
-        body = json.dumps(data).encode()
+        body = json.dumps(data).encode("utf-8")
 
         self.send_response(200)
 
@@ -518,19 +558,24 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
 
-server = HTTPServer(
-    ("localhost", 8000),
-    Handler
-)
+def main():
+    server = HTTPServer(("localhost", 8000), Handler)
+    print("Servidor corriendo en http://localhost:8000")
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print("\nServidor detenido")
+    finally:
+        server.server_close()
 
-print("Servidor corriendo en http://localhost:8000")
 
-server.serve_forever()
+if __name__ == "__main__":
+    main()
 ```
 
 ---
 
-# 13. Crear varias rutas
+## 13. Crear varias rutas
 
 Queremos:
 
@@ -546,27 +591,29 @@ Podemos revisar:
 self.path
 ```
 
+`self.path` contiene también la query. Con `urlsplit(self.path).path` obtenemos solo la ruta; así `/products?min_price=1000` sigue llegando a `/products`, aunque esta API manual todavía no aplica filtros. FastAPI hará ese filtrado en la clase 11.
+
 Ejemplo:
 
 ```python
 def do_GET(self):
 
-    if self.path == "/":
+    if urlsplit(self.path).path == "/":
         ...
 
-    elif self.path == "/health":
+    elif urlsplit(self.path).path == "/health":
         ...
 
-    elif self.path == "/products":
+    elif urlsplit(self.path).path == "/products":
         ...
 ```
 
 ---
 
-# 14. Ruta `/health`
+## 14. Ruta `/health`
 
 ```python
-if self.path == "/health":
+if urlsplit(self.path).path == "/health":
 
     data = {
         "status": "ok"
@@ -595,7 +642,7 @@ Resultado:
 
 ---
 
-# 15. Ruta `/products`
+## 15. Ruta `/products`
 
 ```python
 productos = [
@@ -619,27 +666,29 @@ productos = [
 
 Para `/products`:
 
-```python
-elif self.path == "/products":
+Fragmento dentro de `do_GET()` (requiere los `if` anteriores):
+
+```text
+elif urlsplit(self.path).path == "/products":
     data = productos
 ```
 
 Luego:
 
 ```python
-body = json.dumps(data).encode()
+body = json.dumps(data).encode("utf-8")
 ```
 
 ---
 
-# 16. Evitar repetir código
+## 16. Evitar repetir código
 
-Crea una función:
+Crea un método dentro de `Handler`:
 
 ```python
 def enviar_json(self, data, status=200):
 
-    body = json.dumps(data).encode()
+    body = json.dumps(data).encode("utf-8")
 
     self.send_response(status)
 
@@ -656,28 +705,30 @@ def enviar_json(self, data, status=200):
 Entonces:
 
 ```python
-if self.path == "/":
+if urlsplit(self.path).path == "/":
 
     self.enviar_json({
         "mensaje": "Mi API"
     })
 
-elif self.path == "/health":
+elif urlsplit(self.path).path == "/health":
 
     self.enviar_json({
         "status": "ok"
     })
 
-elif self.path == "/products":
+elif urlsplit(self.path).path == "/products":
 
     self.enviar_json(productos)
 ```
 
 ---
 
-# 17. Ruta no encontrada
+## 17. Ruta no encontrada
 
-```python
+Fragmento final dentro de `do_GET()`:
+
+```text
 else:
 
     self.enviar_json(
@@ -710,10 +761,11 @@ y:
 
 ---
 
-# 18. Servidor completo
+## 18. Servidor completo
 
 ```python
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from urllib.parse import urlsplit
 import json
 
 
@@ -744,7 +796,7 @@ class Handler(BaseHTTPRequestHandler):
         status=200
     ):
 
-        body = json.dumps(data).encode()
+        body = json.dumps(data).encode("utf-8")
 
         self.send_response(status)
 
@@ -760,19 +812,19 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
 
-        if self.path == "/":
+        if urlsplit(self.path).path == "/":
 
             self.enviar_json({
                 "mensaje": "Mi primera API"
             })
 
-        elif self.path == "/health":
+        elif urlsplit(self.path).path == "/health":
 
             self.enviar_json({
                 "status": "ok"
             })
 
-        elif self.path == "/products":
+        elif urlsplit(self.path).path == "/products":
 
             self.enviar_json(productos)
 
@@ -786,19 +838,24 @@ class Handler(BaseHTTPRequestHandler):
             )
 
 
-server = HTTPServer(
-    ("localhost", 8000),
-    Handler
-)
+def main():
+    server = HTTPServer(("localhost", 8000), Handler)
+    print("Servidor corriendo en http://localhost:8000")
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print("\nServidor detenido")
+    finally:
+        server.server_close()
 
-print("Servidor corriendo en http://localhost:8000")
 
-server.serve_forever()
+if __name__ == "__main__":
+    main()
 ```
 
 ---
 
-# Actividad 2 — Agregar rutas
+## Actividad 2: Agregar rutas
 
 Agrega:
 
@@ -807,7 +864,7 @@ GET /info
 GET /users
 ```
 
-## `/info`
+### `/info`
 
 ```json
 {
@@ -817,7 +874,7 @@ GET /users
 }
 ```
 
-## `/users`
+### `/users`
 
 ```json
 [
@@ -846,7 +903,7 @@ requests
 
 ---
 
-# 19. Consumir `/products` desde Python
+## 19. Consumir `/products` desde Python
 
 `client.py`:
 
@@ -894,7 +951,7 @@ requests → nuestro servidor
 
 ---
 
-# 20. Navegador vs `curl` vs `requests`
+## 20. Navegador vs `curl` vs `requests`
 
 Los tres son clientes HTTP.
 
@@ -908,7 +965,7 @@ El servidor recibe HTTP sin importar qué cliente hizo el request.
 
 ---
 
-# 21. ¿Qué está haciendo nuestro servidor?
+## 21. ¿Qué está haciendo nuestro servidor?
 
 ```text
 Recibir request
@@ -932,6 +989,7 @@ Enviar body
 
 ```python
 def do_GET(self):
+    ...
 ```
 
 corresponde al método:
@@ -950,20 +1008,19 @@ nos permite identificar la ruta.
 
 ---
 
-# 22. ¿Qué pasa con POST?
+## 22. ¿Qué pasa con POST?
 
 También podríamos implementar:
 
 ```python
 def do_POST(self):
+    ...
 ```
 
 Tendríamos que leer manualmente el body:
 
 ```python
-length = int(
-    self.headers["Content-Length"]
-)
+length = int(self.headers.get("Content-Length", "0"))
 
 body = self.rfile.read(length)
 ```
@@ -974,7 +1031,7 @@ Después:
 data = json.loads(body)
 ```
 
-Y tendríamos que validar manualmente los datos.
+Este fragmento es conceptual: para un POST completo hay que manejar un tamaño ausente o inválido, JSON mal formado y campos incorrectos antes de guardar datos. No agregaremos ese endpoint manual; en la clase 11 veremos cómo FastAPI y Pydantic resuelven gran parte del trabajo.
 
 Por ejemplo:
 
@@ -988,9 +1045,9 @@ Esto comienza a generar bastante código manual.
 
 ---
 
-# 23. ¿Qué problema aparece?
+## 23. ¿Qué problema aparece?
 
-Ya estamos manejando nosotros mismos:
+Ya manejamos rutas, respuestas y errores. También vimos qué trabajo haría falta para implementar POST:
 
 ```text
 routes
@@ -1016,7 +1073,7 @@ se vuelve mucho más difícil.
 
 ---
 
-# 24. Puente a FastAPI
+## 24. Puente a FastAPI
 
 Con nuestro servidor manual:
 
@@ -1025,7 +1082,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
 
-        if self.path == "/products":
+        if urlsplit(self.path).path == "/products":
             ...
 ```
 
@@ -1040,7 +1097,7 @@ def get_products():
 En lugar de:
 
 ```python
-body = json.dumps(productos).encode()
+body = json.dumps(productos).encode("utf-8")
 ```
 
 podremos:
@@ -1049,7 +1106,7 @@ podremos:
 return productos
 ```
 
-FastAPI se encargará de:
+FastAPI automatiza estas tareas, usando Pydantic para los modelos y la validación. Nosotros elegimos los códigos HTTP de creación o error:
 
 ```text
 routing
@@ -1070,7 +1127,7 @@ con documentación automática.
 
 ---
 
-# Ejercicio final — Mini Products API
+## Ejercicio final: Mini Products API
 
 Construye un servidor con:
 
@@ -1082,7 +1139,7 @@ GET /users
 GET /info
 ```
 
-## `/`
+### `/`
 
 ```json
 {
@@ -1090,7 +1147,7 @@ GET /info
 }
 ```
 
-## `/health`
+### `/health`
 
 ```json
 {
@@ -1098,15 +1155,15 @@ GET /info
 }
 ```
 
-## `/products`
+### `/products`
 
 Debe devolver al menos 5 productos.
 
-## `/users`
+### `/users`
 
 Debe devolver al menos 5 usuarios.
 
-## `/info`
+### `/info`
 
 ```json
 {
@@ -1132,7 +1189,7 @@ y:
 
 ---
 
-# Cliente del ejercicio
+## Cliente del ejercicio
 
 Crea también:
 
@@ -1165,7 +1222,7 @@ Además:
 
 ---
 
-# Bonus
+## Práctica opcional
 
 Haz que `client.py` consulte primero:
 
@@ -1195,12 +1252,13 @@ No fue posible conectar con la API.
 
 ---
 
-# Cheat Sheet
+## Cheat sheet
 
-## Crear servidor
+### Crear servidor
 
 ```python
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from urllib.parse import urlsplit
 ```
 
 ```python
@@ -1212,26 +1270,26 @@ server = HTTPServer(
 server.serve_forever()
 ```
 
-## GET
+### GET
 
 ```python
 def do_GET(self):
     ...
 ```
 
-## Ruta
+### Ruta
 
 ```python
 self.path
 ```
 
-## Status
+### Status
 
 ```python
 self.send_response(200)
 ```
 
-## Header
+### Header
 
 ```python
 self.send_header(
@@ -1240,31 +1298,31 @@ self.send_header(
 )
 ```
 
-## Finalizar headers
+### Finalizar headers
 
 ```python
 self.end_headers()
 ```
 
-## Python → JSON
+### Python → JSON
 
 ```python
 json.dumps(data)
 ```
 
-## String → bytes
+### String → bytes
 
 ```python
-texto.encode()
+texto.encode("utf-8")
 ```
 
-## Escribir respuesta
+### Escribir respuesta
 
 ```python
 self.wfile.write(body)
 ```
 
-## Cliente Python
+### Cliente Python
 
 ```python
 response = requests.get(
@@ -1272,19 +1330,19 @@ response = requests.get(
 )
 ```
 
-## Curl
+### Curl
 
 ```bash
 curl http://localhost:8000/products
 ```
 
-## Curl + headers
+### Curl + headers
 
 ```bash
 curl -i http://localhost:8000/products
 ```
 
-## Navegador
+### Navegador
 
 ```text
 http://localhost:8000/products
@@ -1292,7 +1350,7 @@ http://localhost:8000/products
 
 ---
 
-# Flujo completo
+## Flujo completo
 
 ```text
 Browser / curl / requests
@@ -1320,7 +1378,7 @@ Browser / curl / requests
      json.dumps()
           │
           ▼
-       .encode()
+       .encode("utf-8")
           │
           ▼
       HTTP Response
@@ -1331,7 +1389,7 @@ Browser / curl / requests
 
 ---
 
-# Siguiente clase
+## Siguiente clase
 
 Hoy construimos manualmente:
 
@@ -1352,19 +1410,22 @@ from fastapi import FastAPI
 Pasaremos de:
 
 ```python
-if self.path == "/products":
+if urlsplit(self.path).path == "/products":
+    ...
 ```
 
 a:
 
 ```python
 @app.get("/products")
+def get_products():
+    return productos
 ```
 
 Y de:
 
 ```python
-json.dumps(...).encode()
+json.dumps(...).encode("utf-8")
 ```
 
 a:
@@ -1374,3 +1435,7 @@ return productos
 ```
 
 Ese será nuestro punto de entrada a **FastAPI**.
+
+---
+
+[Índice del curso](README.md)

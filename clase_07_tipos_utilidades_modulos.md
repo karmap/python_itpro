@@ -1,13 +1,19 @@
-# Clase 1 — Python moderno: Type Hints, utilidades y módulos
+# Clase 07: Anotaciones de tipos, utilidades y módulos
 
-**Duración:** 2 horas  
-**Objetivo:** escribir código Python más claro, aprovechar herramientas modernas del lenguaje y aprender a organizar un programa en varios módulos.
+**Duración:** 2 horas
+
+
+> Los bloques de desarrollo se leen en orden dentro de cada ejemplo. Las plantillas con `...` se completan en las actividades; las cheat sheets reúnen operaciones independientes. Los programas completos incluyen sus imports.
+
+**Objetivo:** escribir código Python más claro mediante anotaciones de tipos y utilidades del lenguaje, y organizar un programa en varios módulos.
 
 ---
 
-## 1. Type Hints
+## 1. Anotaciones de tipos
 
-Python permite indicar qué tipos de datos esperamos recibir y devolver.
+Python permite indicar qué tipos de datos esperamos recibir y devolver. Usaremos Python 3.10 o superior para `dict | None`; la versión comprobada del curso es Python 3.12.14.
+
+`precio: float` describe un parámetro y `-> float` describe el resultado. `list[str]` significa una lista de cadenas. En variables, `nombre: str = "Laptop"` anota y asigna; una anotación sin `=` no asigna un valor. Un editor o IDE es el programa donde escribes código; sus herramientas pueden usar estas pistas para detectar errores antes de ejecutar.
 
 ```python
 def calcular_total(precio: float, cantidad: int) -> float:
@@ -37,7 +43,7 @@ def obtener_productos() -> list[dict]:
     ]
 ```
 
-Los Type Hints no obligan a Python a respetar los tipos. Sirven como información para desarrolladores, IDEs, analizadores y frameworks como FastAPI.
+Las anotaciones de tipos no obligan a Python a respetar los tipos. Sirven como información para desarrolladores, IDEs, analizadores y frameworks como FastAPI.
 
 ---
 
@@ -57,6 +63,7 @@ def buscar_producto(productos: list[dict], nombre: str) -> dict | None:
 Uso:
 
 ```python
+productos = obtener_productos()
 producto = buscar_producto(productos, "Laptop")
 
 if producto is None:
@@ -65,11 +72,13 @@ else:
     print(producto)
 ```
 
-`dict | None` significa que la función puede regresar un dictionary o `None`.
+`dict | None` significa que la función puede regresar un diccionario o `None`.
+
+Aceptar `None` y permitir omitir un argumento son cosas distintas: `nombre: str | None` acepta `None`, pero necesita un argumento; `nombre: str | None = None` añade un valor por defecto. `is None` comprueba específicamente la ausencia de valor. `if not productos` comprueba si la lista está vacía; también se consideran falsos `None`, `0`, `False` y una cadena vacía.
 
 ---
 
-# Actividad 1 — Type Hints y `None`
+## Actividad 1: Anotaciones de tipos y `None`
 
 ```python
 usuarios = [
@@ -88,7 +97,7 @@ usuarios_activos(usuarios)
 
 Requisitos:
 
-1. Agregar Type Hints a parámetros y retornos.
+1. Agregar anotaciones de tipos a parámetros y retornos.
 2. `buscar_usuario()` debe regresar el usuario o `None`.
 3. `usuarios_activos()` debe regresar una lista.
 4. Mostrar `"Usuario no encontrado"` usando `is None`.
@@ -107,7 +116,9 @@ Carlos
 
 ---
 
-## 3. Unpacking
+## 3. Recordatorio de desempaquetado
+
+Ya desempaquetamos tuplas en la clase 02. Aquí reutilizamos esa operación y después la aplicaremos a llamadas de funciones.
 
 ```python
 producto = ("Laptop", 15000, 5)
@@ -135,14 +146,18 @@ primero, *otros, ultimo = [10, 20, 30, 40, 50]
 
 ## 4. `enumerate()`
 
+`enumerate()` produce pares `(posición, elemento)` que desempaquetamos con `for i, producto`. Por defecto empieza en `0`; `start=1` sirve para mostrar una numeración al usuario sin cambiar los índices de la lista.
+
 En lugar de:
 
 ```python
+productos = ["Laptop", "Mouse", "Monitor"]
+
 for i in range(len(productos)):
     print(i, productos[i])
 ```
 
-podemos usar:
+podemos numerar desde 1 usando `enumerate()`. Para conservar exactamente los índices anteriores, omite `start=1`:
 
 ```python
 for i, producto in enumerate(productos, start=1):
@@ -171,6 +186,10 @@ for nombre, precio in zip(nombres, precios):
     print(nombre, precio)
 ```
 
+Por defecto, `zip()` termina al agotarse la colección más corta. Para esta actividad las listas tienen la misma longitud.
+
+Cada paso entrega un par, por ejemplo `("Laptop", 15000)`. `list(zip(...))` reúne esos pares en una lista y `dict(zip(...))` toma el primer valor como clave y el segundo como su valor.
+
 También podemos crear nuevas estructuras:
 
 ```python
@@ -185,7 +204,9 @@ productos = dict(zip(nombres, precios))
 
 ---
 
-## 6. `*args`
+## 6. Recordatorio de `*args`
+
+En la clase 05 recibimos varios números con `*numeros`. Recordamos el patrón para contrastarlo con `**kwargs`.
 
 Permite recibir cualquier cantidad de argumentos posicionales.
 
@@ -197,7 +218,7 @@ print(sumar(10, 20))
 print(sumar(10, 20, 30, 40))
 ```
 
-Dentro de la función, `numeros` es una tuple.
+Dentro de la función, `numeros` es una tupla.
 
 ---
 
@@ -216,23 +237,25 @@ mostrar_producto(
 )
 ```
 
-Dentro de la función, `datos` es un dictionary.
+Dentro de la función, `datos` es un diccionario.
 
 ```text
-*args       → tuple
-**kwargs    → dictionary
+*args       → tupla
+**kwargs    → diccionario
 ```
 
 ---
 
 ## 8. Desempacar argumentos
 
+`*datos` entrega los elementos de una lista o tupla como argumentos posicionales. `**producto` entrega los pares de un diccionario como argumentos por nombre; sus claves deben coincidir con los parámetros. En una definición, `*` y `**` reciben argumentos; en una llamada, los expanden. En un diccionario como `{"id": 1, **datos}`, `**` incorpora sus pares; una clave posterior reemplaza el valor de una anterior.
+
 ```python
 def crear_producto(nombre: str, precio: float, stock: int) -> None:
     print(nombre, precio, stock)
 ```
 
-Con una lista o tuple:
+Con una lista o tupla:
 
 ```python
 datos = ["Laptop", 15000, 5]
@@ -240,7 +263,7 @@ datos = ["Laptop", 15000, 5]
 crear_producto(*datos)
 ```
 
-Con un dictionary:
+Con un diccionario:
 
 ```python
 producto = {
@@ -254,7 +277,7 @@ crear_producto(**producto)
 
 ---
 
-# Actividad 2 — Unpacking, `enumerate()`, `zip()` y `**`
+## Actividad 2: Desempaquetado, `enumerate()`, `zip()` y `**`
 
 ```python
 nombres = ["Laptop", "Mouse", "Monitor", "Webcam"]
@@ -276,7 +299,7 @@ def mostrar_producto(
 Requisitos:
 
 1. Utilizar `zip()` para recorrer las tres listas simultáneamente.
-2. Crear un dictionary por producto.
+2. Crear un diccionario por producto.
 3. Guardarlos en una lista llamada `productos`.
 4. Utilizar `enumerate(..., start=1)` para recorrer `productos`.
 5. Llamar `mostrar_producto()` usando `**producto`.
@@ -302,7 +325,7 @@ Salida aproximada:
 4. Webcam - $800 - Stock: 0
 ```
 
-**Bonus:** mostrar `"AGOTADO"` cuando el stock sea `0`.
+**Práctica opcional:** mostrar `"AGOTADO"` cuando el stock sea `0`.
 
 ---
 
@@ -321,6 +344,8 @@ inventory/
 
 Cada archivo `.py` puede funcionar como un módulo.
 
+Al importar `products` desde `main.py`, Python carga sus definiciones y ejecuta su código de nivel superior. Guarda estos archivos en la misma carpeta para este ejercicio. Los módulos estándar, como `math`, vienen con Python; las bibliotecas externas, como `requests`, se instalan con `pip` en la clase 08. No llames a tus archivos `json.py`, `requests.py` o como un módulo que quieras importar, porque podrías ocultarlo.
+
 ### `products.py`
 
 ```python
@@ -333,6 +358,10 @@ def buscar_producto(
             return producto
 
     return None
+
+
+def productos_disponibles(productos: list[dict]) -> list[dict]:
+    return [producto for producto in productos if producto["stock"] > 0]
 ```
 
 Desde `main.py`:
@@ -340,6 +369,7 @@ Desde `main.py`:
 ```python
 from products import buscar_producto
 
+productos = [{"nombre": "Laptop", "precio": 15000, "stock": 5}]
 producto = buscar_producto(productos, "Laptop")
 ```
 
@@ -366,7 +396,7 @@ buscar_producto(productos, "Laptop")
 Varias:
 
 ```python
-from products import buscar_producto, agregar_producto
+from products import buscar_producto, productos_disponibles
 ```
 
 Alias:
@@ -375,16 +405,13 @@ Alias:
 import products as p
 ```
 
-Ejemplos conocidos:
-
-```python
-import pandas as pd
-import numpy as np
-```
+El alias solamente cambia el nombre con el que usamos el módulo; no instala paquetes ni cambia sus funciones.
 
 ---
 
 ## 11. Módulos estándar
+
+`random.randint(1, 10)` elige un entero entre ambos límites, incluidos. `math.sqrt(25)` calcula la raíz cuadrada y devuelve `5.0`.
 
 ```python
 import random
@@ -411,6 +438,8 @@ print(sqrt(25))
 ## 12. `__name__ == "__main__"`
 
 Cada módulo tiene automáticamente una variable llamada `__name__`.
+
+Al importarlo, esa variable contiene su nombre, por ejemplo `"products"`; al ejecutarlo directamente, vale `"__main__"`. La condición permite ejecutar el programa al iniciar el archivo y reutilizar sus funciones al importarlo sin iniciar la interacción.
 
 Si ejecutamos:
 
@@ -510,6 +539,8 @@ def productos_disponibles(
     ]
 ```
 
+`max(productos, key=...)` obtiene el producto con mayor precio; la lambda calcula ese criterio para cada diccionario. `max()` falla si la colección está vacía, por eso `if not productos` devuelve antes `None`. `sum()` suma números; `max()` elige el mayor elemento según su valor o el criterio indicado.
+
 ### `reports.py`
 
 ```python
@@ -560,8 +591,7 @@ def main() -> None:
         print(numero, producto["nombre"], producto["precio"])
 
     total = calcular_valor_inventario(productos)
-    print(f"
-Valor del inventario: ${total}")
+    print(f"\nValor del inventario: ${total}")
 
     caro = producto_mas_caro(productos)
 
@@ -575,7 +605,7 @@ if __name__ == "__main__":
 
 ---
 
-# Ejercicio final — Refactorizar un sistema de inventario
+## Ejercicio final: Refactorizar un sistema de inventario
 
 Partimos de:
 
@@ -631,7 +661,7 @@ print("Valor inventario:", calcular_valor_inventario(productos))
 print("Más caro:", producto_mas_caro(productos))
 ```
 
-## Objetivo
+### Objetivo
 
 Refactorizarlo a:
 
@@ -671,7 +701,7 @@ Debe contener:
 
 Además:
 
-1. Agregar Type Hints a todas las funciones.
+1. Agregar anotaciones de tipos a todas las funciones.
 2. Utilizar `dict | None` cuando una función pueda no encontrar un resultado.
 3. Utilizar `enumerate()` para numerar productos.
 4. Utilizar unpacking al menos una vez.
@@ -683,7 +713,7 @@ if __name__ == "__main__":
     main()
 ```
 
-### Bonus
+### Práctica opcional
 
 Agregar:
 
@@ -693,13 +723,14 @@ def actualizar_stock(
     nombre: str,
     cantidad: int
 ) -> bool:
+    ...
 ```
 
-Debe buscar el producto, actualizar su stock y regresar `True` si lo encontró o `False` si no existe.
+Debe buscar el producto, reemplazar su stock por `cantidad` y regresar `True` si lo encontró o `False` si no existe. Rechaza cantidades negativas con `ValueError`. Se trata de una asignación, no de sumar o restar unidades.
 
 ---
 
-# Cheat Sheet
+## Cheat sheet
 
 ```python
 # Type hints
@@ -770,3 +801,7 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+
+---
+
+[Índice del curso](README.md)

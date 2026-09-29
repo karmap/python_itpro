@@ -1,8 +1,12 @@
-# Python: Listas
+# Clase 01: Listas
+
+**Duración:** 1 a 2 horas
+
+> Los bloques de desarrollo se leen en orden dentro de cada ejemplo. Las plantillas con `...` se completan en las actividades; las cheat sheets reúnen operaciones independientes. Los programas completos incluyen sus imports.
 
 > Material de estudio en español inspirado en la progresión temática de W3Schools, reescrito y ampliado con ejemplos y ejercicios propios.
 
-## Objetivos
+### Objetivos
 
 Al terminar esta sección podrás:
 
@@ -17,7 +21,24 @@ Al terminar esta sección podrás:
 
 ---
 
-# 1. Introducción a las listas
+## Sintaxis que usaremos
+
+En Python, `=` asigna un valor y `==` compara dos valores. Los bloques de `if`, `for`, `while` y `def` empiezan con `:` y se delimitan con sangría; usa cuatro espacios por nivel. `#` inicia un comentario.
+
+`print(valor)` muestra información; `input("Pregunta: ")` lee texto de la terminal. `int(texto)` y `float(texto)` convierten texto a números; una entrada no válida produce un error que aprenderemos a manejar en la clase 06. `str`, `int`, `float` y `bool` nombran los tipos texto, entero, decimal y booleano. `type(valor)` permite consultar el tipo.
+
+Una función se llama con paréntesis, como `len(frutas)`. Un método es una operación de un objeto: `frutas.append("pera")`. Por ahora usaremos funciones incorporadas en Python; aprenderemos a definir las nuestras en la clase 05.
+
+```python
+nombre = "  Ana  "
+print(nombre.strip())   # Ana: retira espacios exteriores
+print(nombre.upper())   # Texto en mayúsculas
+print(nombre.lower())   # Texto en minúsculas
+```
+
+Estos métodos devuelven otra cadena; no modifican la original. Una cadena, una lista y una tupla son **iterables**: se pueden recorrer elemento por elemento con `for`. `range(3)` produce los números `0`, `1`, `2`; el límite final no se incluye.
+
+## 1. Introducción a las listas
 
 Una **lista** es una colección ordenada de elementos.
 
@@ -39,7 +60,7 @@ Las listas tienen cuatro características importantes:
 datos = ["Adrián", 42, True, 1.74]
 ```
 
-## Longitud de una lista
+### Longitud de una lista
 
 Usa `len()` para conocer cuántos elementos contiene.
 
@@ -54,16 +75,18 @@ Resultado:
 3
 ```
 
-## Crear una lista con `list()`
+### Crear una lista con `list()`
 
 También es posible utilizar el constructor `list()`.
+
+`list(iterable)` crea una lista con los elementos que recorre. En el ejemplo, `("manzana", "plátano", "cereza")` es una tupla; la estudiaremos en la siguiente clase.
 
 ```python
 frutas = list(("manzana", "plátano", "cereza"))
 print(frutas)
 ```
 
-## Ejercicio sugerido
+### Ejercicio sugerido
 
 Crea una lista llamada `lenguajes` con cinco lenguajes de programación.
 
@@ -75,7 +98,7 @@ Después:
 
 ---
 
-# 2. Acceder a elementos de una lista
+## 2. Acceder a elementos de una lista
 
 Cada elemento tiene una posición llamada **índice**.
 
@@ -95,7 +118,7 @@ manzana
 plátano
 ```
 
-## Índices negativos
+### Índices negativos
 
 Python permite contar desde el final usando números negativos.
 
@@ -113,7 +136,7 @@ cereza
 
 `-1` representa el último elemento, `-2` el penúltimo, etc.
 
-## Obtener un rango
+### Obtener un rango
 
 Puedes obtener una parte de una lista usando *slicing*.
 
@@ -138,7 +161,7 @@ print(numeros[:3])
 print(numeros[3:])
 ```
 
-## Comprobar si un elemento existe
+### Comprobar si un elemento existe
 
 ```python
 frutas = ["manzana", "plátano", "cereza"]
@@ -147,7 +170,7 @@ if "plátano" in frutas:
     print("Sí existe")
 ```
 
-## Ejercicio sugerido
+### Ejercicio sugerido
 
 Dada la lista:
 
@@ -164,7 +187,7 @@ Obtén:
 
 ---
 
-# 3. Modificar elementos
+## 3. Modificar elementos
 
 Las listas son **mutables**, por lo que sus elementos pueden cambiar.
 
@@ -181,7 +204,7 @@ Resultado:
 ['manzana', 'mango', 'cereza']
 ```
 
-## Modificar varios elementos
+### Modificar varios elementos
 
 También puedes reemplazar un rango.
 
@@ -198,7 +221,7 @@ Python incluso permite sustituir un rango por una cantidad diferente de elemento
 frutas[1:2] = ["mango", "pera", "kiwi"]
 ```
 
-## Ejercicio sugerido
+### Ejercicio sugerido
 
 Crea:
 
@@ -214,9 +237,9 @@ Después:
 
 ---
 
-# 4. Agregar elementos
+## 4. Agregar elementos
 
-## `append()`
+### `append()`
 
 Agrega un elemento al final.
 
@@ -227,7 +250,7 @@ frutas.append("cereza")
 print(frutas)
 ```
 
-## `insert()`
+### `insert()`
 
 Agrega un elemento en una posición específica.
 
@@ -238,7 +261,7 @@ frutas.insert(1, "plátano")
 print(frutas)
 ```
 
-## `extend()`
+### `extend()`
 
 Agrega todos los elementos de otro iterable.
 
@@ -256,7 +279,7 @@ print(frutas)
 frutas.extend(("uva", "pera"))
 ```
 
-## Ejercicio sugerido
+### Ejercicio sugerido
 
 Comienza con:
 
@@ -272,9 +295,9 @@ Haz lo siguiente:
 
 ---
 
-# 5. Eliminar elementos
+## 5. Eliminar elementos
 
-## `remove()`
+### `remove()`
 
 Elimina la primera aparición de un valor.
 
@@ -283,7 +306,7 @@ frutas = ["manzana", "plátano", "cereza"]
 frutas.remove("plátano")
 ```
 
-## `pop()`
+### `pop()`
 
 Elimina un elemento por índice y además devuelve el valor eliminado.
 
@@ -300,7 +323,7 @@ Si no proporcionas un índice, elimina el último elemento.
 frutas.pop()
 ```
 
-## `del`
+### `del`
 
 También puedes eliminar por índice usando `del`.
 
@@ -315,7 +338,7 @@ del frutas[0]
 del frutas
 ```
 
-## `clear()`
+### `clear()`
 
 Vacía la lista, pero conserva la variable.
 
@@ -332,7 +355,7 @@ Resultado:
 []
 ```
 
-## Ejercicio sugerido
+### Ejercicio sugerido
 
 Usa:
 
@@ -349,9 +372,9 @@ Después:
 
 ---
 
-# 6. Recorrer listas
+## 6. Recorrer listas
 
-## `for`
+### `for`
 
 La forma más común de recorrer una lista es con un ciclo `for`.
 
@@ -362,7 +385,11 @@ for fruta in frutas:
     print(fruta)
 ```
 
-## Recorrer utilizando índices
+### Alternativas de consulta: índices y `while`
+
+El recorrido directo anterior es suficiente para la práctica. Estos dos patrones se incluyen como recordatorio para quien necesite índices o control manual.
+
+#### Recorrer utilizando índices
 
 Puedes combinar `range()` y `len()`.
 
@@ -373,9 +400,11 @@ for i in range(len(frutas)):
     print(i, frutas[i])
 ```
 
-## `while`
+#### `while`
 
 También puedes utilizar un ciclo `while`.
+
+`i += 1` equivale a `i = i + 1`; actualiza la variable para avanzar. Usaremos también `total += valor` para acumular sumas.
 
 ```python
 frutas = ["manzana", "plátano", "cereza"]
@@ -387,7 +416,7 @@ while i < len(frutas):
     i += 1
 ```
 
-## Ejercicio sugerido
+### Ejercicio sugerido
 
 Dada:
 
@@ -401,9 +430,9 @@ ventas = [1200, 850, 1500, 2000, 700]
 
 ---
 
-# 7. List Comprehension
+## 7. List comprehensions
 
-Una **list comprehension** permite construir una lista nueva de forma compacta.
+Una **list comprehension** permite construir una lista nueva de forma compacta. Su patrón es `[expresión for elemento in iterable]`: recorre los elementos y añade el resultado de la expresión. `n ** 2` eleva `n` al cuadrado; aquí `**` es el operador de potencia.
 
 Forma general:
 
@@ -426,7 +455,9 @@ Resultado:
 [1, 4, 9, 16, 25]
 ```
 
-## Agregar una condición
+### Agregar una condición
+
+Una condición después del recorrido filtra los elementos. `%` calcula el resto de una división; `n % 2 == 0` comprueba si un entero es par.
 
 ```python
 numeros = [1, 2, 3, 4, 5, 6]
@@ -441,23 +472,25 @@ Resultado:
 [2, 4, 6]
 ```
 
-## Transformar elementos
+### Transformar elementos
 
 ```python
 nombres = ["ana", "luis", "maria"]
 mayusculas = [nombre.upper() for nombre in nombres]
 ```
 
-## Expresión condicional
+### Expresión condicional
 
 También puedes utilizar `if/else` dentro de la expresión.
+
+`"par" if condición else "impar"` elige un valor para cada elemento; este patrón transforma todos los elementos, mientras que el `if` del final del ejemplo anterior los filtra.
 
 ```python
 numeros = [1, 2, 3, 4]
 resultado = ["par" if n % 2 == 0 else "impar" for n in numeros]
 ```
 
-## Ejercicio sugerido
+### Ejercicio sugerido
 
 Usa:
 
@@ -473,9 +506,9 @@ Crea mediante *list comprehension*:
 
 ---
 
-# 8. Ordenar listas
+## 8. Ordenar listas
 
-## `sort()`
+### `sort()`
 
 Ordena la lista original.
 
@@ -492,22 +525,24 @@ Resultado:
 [10, 20, 40, 50]
 ```
 
-## Orden descendente
+### Orden descendente
 
 ```python
 numeros.sort(reverse=True)
 ```
 
-## Ordenar texto
+### Ordenar texto
 
 ```python
 frutas = ["pera", "manzana", "uva", "cereza"]
 frutas.sort()
 ```
 
-## Usar una función como criterio
+### Usar una función como criterio
 
 El parámetro `key` permite personalizar el orden.
+
+`abs(numero)` devuelve el valor absoluto: `abs(-10)` es `10`. Con `key=abs`, `sort()` calcula ese valor para comparar cada elemento, pero conserva los números originales. Se pasa la función sin paréntesis porque `sort()` la llamará; profundizaremos en este patrón en la clase 05.
 
 ```python
 numeros = [-10, 3, -2, 8]
@@ -516,7 +551,7 @@ numeros.sort(key=abs)
 print(numeros)
 ```
 
-## `sorted()`
+### `sorted()`
 
 Si quieres conservar la lista original, puedes usar `sorted()`.
 
@@ -528,7 +563,7 @@ print(numeros)
 print(ordenados)
 ```
 
-## `reverse()`
+### `reverse()`
 
 Invierte el orden actual, sin ordenar por valor.
 
@@ -537,7 +572,7 @@ frutas = ["a", "b", "c"]
 frutas.reverse()
 ```
 
-## Ejercicio sugerido
+### Ejercicio sugerido
 
 Dada:
 
@@ -551,7 +586,7 @@ calificaciones = [8.5, 10, 7.2, 9.1, 6.8]
 
 ---
 
-# 9. Copiar listas
+## 9. Copiar listas
 
 Asignar una lista a otra variable **no crea una copia independiente**.
 
@@ -572,7 +607,7 @@ Resultado:
 
 Ambas variables hacen referencia a la misma lista.
 
-## `copy()`
+### `copy()`
 
 ```python
 a = [1, 2, 3]
@@ -584,7 +619,7 @@ print(a)
 print(b)
 ```
 
-## `list()`
+### `list()`
 
 También puedes crear una copia con el constructor.
 
@@ -592,7 +627,7 @@ También puedes crear una copia con el constructor.
 b = list(a)
 ```
 
-## Slicing
+### Slicing
 
 Otra alternativa frecuente es:
 
@@ -602,7 +637,7 @@ b = a[:]
 
 > Estas técnicas realizan una copia superficial (*shallow copy*). Si la lista contiene otras listas, existen consideraciones adicionales.
 
-## Ejercicio sugerido
+### Ejercicio sugerido
 
 Crea:
 
@@ -618,9 +653,9 @@ original = [10, 20, 30]
 
 ---
 
-# 10. Unir listas
+## 10. Unir listas
 
-## Operador `+`
+### Operador `+`
 
 ```python
 frontend = ["HTML", "CSS", "JavaScript"]
@@ -630,7 +665,7 @@ stack = frontend + backend
 print(stack)
 ```
 
-## `extend()`
+### `extend()`
 
 `extend()` modifica la lista existente.
 
@@ -642,7 +677,7 @@ frontend.extend(backend)
 print(frontend)
 ```
 
-## Con un ciclo
+### Con un ciclo
 
 ```python
 lista1 = [1, 2, 3]
@@ -652,7 +687,7 @@ for elemento in lista2:
     lista1.append(elemento)
 ```
 
-## Diferencia importante
+### Diferencia importante
 
 ```python
 lista1 + lista2
@@ -668,7 +703,7 @@ lista1.extend(lista2)
 
 modifica `lista1`.
 
-## Ejercicio sugerido
+### Ejercicio sugerido
 
 Crea:
 
@@ -683,7 +718,7 @@ alumnos_b = ["María", "Sofía"]
 
 ---
 
-# 11. Métodos principales de las listas
+## 11. Métodos principales de las listas
 
 Python incluye varios métodos útiles para trabajar con listas.
 
@@ -701,7 +736,7 @@ Python incluye varios métodos útiles para trabajar con listas.
 | `reverse()` | Invierte el orden actual. |
 | `sort()` | Ordena la lista. |
 
-## Ejemplo integrado
+### Ejemplo integrado
 
 ```python
 numeros = [5, 2, 5, 8, 1]
@@ -720,7 +755,7 @@ print(numeros)
 
 ---
 
-# 12. Ejercicio final
+## 12. Ejercicio final
 
 Construye un pequeño programa para administrar una lista de compras.
 
@@ -751,20 +786,23 @@ Lista en mayúsculas:
 ['AGUA', 'CAFÉ', 'HUEVOS', 'LECHE']
 ```
 
-## Reto adicional
+### Reto adicional
 
 Permite que el usuario agregue un producto desde teclado:
 
 ```python
-producto = input("Producto: ")
-compras.append(producto)
+producto = input("Producto: ").strip()
+if producto in compras:
+    print("El producto ya estaba en la lista")
+else:
+    compras.append(producto)
 ```
 
-Después comprueba si el producto ya existía antes de agregarlo.
+Comprueba la pertenencia antes de insertar; comprobarla después siempre encontraría el producto recién agregado.
 
 ---
 
-# Cheat Sheet
+## Cheat sheet
 
 ```python
 # Crear
@@ -814,7 +852,7 @@ lista1.extend(lista2)
 
 ---
 
-# Preguntas de repaso
+## Preguntas de repaso
 
 1. ¿Cuál es el índice del primer elemento de una lista?
 2. ¿Qué diferencia existe entre `append()` e `insert()`?
@@ -827,8 +865,12 @@ lista1.extend(lista2)
 
 ---
 
-## Referencia
+### Referencia
 
 Estructura temática basada en la sección **Python Lists** de W3Schools:
 
 https://www.w3schools.com/python/python_lists.asp
+
+---
+
+[Índice del curso](README.md)

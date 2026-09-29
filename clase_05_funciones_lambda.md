@@ -1,6 +1,12 @@
-# Python: Functions y Lambda
+# Clase 05: Funciones y lambda
+
+**Duración:** 1 a 2 horas
+
+> Los bloques de desarrollo se leen en orden dentro de cada ejemplo. Las plantillas con `...` se completan en las actividades; las cheat sheets reúnen operaciones independientes. Los programas completos incluyen sus imports.
 
 Una **función** es un bloque de código reutilizable que realiza una tarea específica.
+
+`def` define la función, pero no ejecuta su cuerpo. La llamada `saludar()` sí lo ejecuta. Los parámetros se escriben en la definición; los argumentos son los valores que entregamos al llamar.
 
 ```python
 def saludar():
@@ -9,7 +15,9 @@ def saludar():
 saludar()
 ```
 
-# Parámetros y Return
+## Parámetros y retorno
+
+`return` termina la función y entrega un valor al código que la llamó. `print()` solo lo muestra en pantalla. Si una función termina sin `return`, devuelve `None`, que representa la ausencia de un resultado. Por eso la función `saludar()` anterior imprime un saludo, pero no devuelve ese texto.
 
 ```python
 def sumar(a, b):
@@ -19,7 +27,9 @@ resultado = sumar(10, 5)
 print(resultado)
 ```
 
-## Valores por defecto
+### Valores por defecto
+
+Un valor por defecto se usa cuando omites ese argumento. En este ejemplo, `saludar("Ana")` usa `"Ana"` y `saludar()` usa `"Usuario"`.
 
 ```python
 def saludar(nombre="Usuario"):
@@ -29,7 +39,9 @@ saludar("Ana")
 saludar()
 ```
 
-## Argumentos por nombre
+### Argumentos por nombre
+
+Puedes entregar los argumentos por posición o por nombre. Al usar nombres, deben coincidir con los parámetros de la definición; su orden puede cambiar.
 
 ```python
 def crear_usuario(nombre, edad, pais):
@@ -38,7 +50,7 @@ def crear_usuario(nombre, edad, pais):
 crear_usuario(nombre="Ana", pais="México", edad=25)
 ```
 
-## Número variable de argumentos
+### Número variable de argumentos
 
 ```python
 def sumar(*numeros):
@@ -50,11 +62,13 @@ def sumar(*numeros):
 print(sumar(10, 20, 30, 40))
 ```
 
-`args` se comporta como una **tupla**.
+Dentro de esta función, `numeros` es una **tupla**. El nombre habitual `args` es una convención.
+
+Las plantillas con `...` son sintácticamente válidas, pero todavía no implementan la lógica solicitada.
 
 ---
 
-# Funciones con Lists y Dictionaries
+## Funciones con listas y diccionarios
 
 ```python
 def mostrar_productos(productos):
@@ -74,7 +88,7 @@ def convertir_mayusculas(productos):
     return resultado
 ```
 
-Con dictionaries:
+Con diccionarios:
 
 ```python
 def mostrar_usuario(usuario):
@@ -86,18 +100,18 @@ Dividir un programa en funciones permite separar responsabilidades:
 
 ```python
 def calcular_total(productos):
-    # ...
+    ...  # Completa esta función durante la actividad.
 
 def encontrar_producto(productos):
-    # ...
+    ...  # Completa esta función durante la actividad.
 
 def mostrar_resultados(productos):
-    # ...
+    ...  # Completa esta función durante la actividad.
 ```
 
 ---
 
-# Scope
+## Alcance de las variables
 
 Una variable creada dentro de una función normalmente solo existe dentro de ella:
 
@@ -111,7 +125,7 @@ En general, es preferible pasar información mediante parámetros y devolver res
 
 ---
 
-# Lambda
+## Lambda
 
 Una función `lambda` es una función pequeña escrita en una sola expresión.
 
@@ -136,7 +150,9 @@ Con varios parámetros:
 sumar = lambda a, b: a + b
 ```
 
-## Lambda para ordenar
+### Lambda para ordenar
+
+`key` recibe una función que calcula el criterio de comparación para cada elemento. `lambda producto: producto[1]` obtiene el precio de cada producto; `reverse=True` ordena de mayor a menor. La función se entrega a `sort()` para que este la llame durante la ordenación.
 
 ```python
 productos = [
@@ -161,7 +177,7 @@ Resultado:
 ]
 ```
 
-| Function | Lambda |
+| Función | Lambda |
 |---|---|
 | Usa `def` | Usa `lambda` |
 | Puede tener varias líneas | Una expresión |
@@ -170,7 +186,9 @@ Resultado:
 
 ---
 
-# Cheat Sheet
+`sum(iterable)` suma sus números, por ejemplo `sum([10, 20, 30])` devuelve `60`. Es una función incorporada, diferente de las funciones `sumar()` que hemos definido. En el ejercicio, `.lower()` permite comparar nombres sin distinguir mayúsculas de minúsculas; no elimina acentos.
+
+## Cheat sheet
 
 ```python
 def sumar(a, b):
@@ -186,6 +204,10 @@ duplicar = lambda x: x * 2
 
 sumar = lambda a, b: a + b
 
+productos = [
+    {"nombre": "Café", "precio": 8},
+    {"nombre": "Pan", "precio": 9}
+]
 productos.sort(
     key=lambda producto: producto["precio"]
 )
@@ -193,7 +215,7 @@ productos.sort(
 
 ---
 
-# 🟡 Ejercicio final — Procesador de productos
+## Ejercicio final: Procesador de productos
 
 ```python
 productos = [
@@ -210,19 +232,19 @@ Crea:
 
 ```python
 def productos_disponibles(productos):
-    # ...
+    ...  # Completa esta función durante la actividad.
 
 def calcular_valor(productos):
-    # ...
+    ...  # Completa esta función durante la actividad.
 
 def buscar_producto(productos, nombre):
-    # ...
+    ...  # Completa esta función durante la actividad.
 
 def mostrar_productos(productos):
-    # ...
+    ...  # Completa esta función durante la actividad.
 ```
 
-## Requisitos
+### Requisitos
 
 1. `productos_disponibles()` debe devolver una nueva lista únicamente con productos cuyo `stock` sea mayor a `0`.
 
@@ -246,7 +268,7 @@ MOUSE - $450 - Stock: 12
 
 ---
 
-# Output esperado aproximado
+## Salida esperada aproximada
 
 ```text
 PRODUCTOS DISPONIBLES
@@ -275,12 +297,17 @@ WEBCAM - $800
 MOUSE - $450
 ```
 
-## Bonus
+### Práctica opcional
 
 Agrega un parámetro opcional:
 
 ```python
 def mostrar_productos(productos, mostrar_sin_stock=False):
+    ...
 ```
 
 Si es `False`, no debe mostrar productos sin stock. Si es `True`, debe mostrarlos todos.
+
+---
+
+[Índice del curso](README.md)

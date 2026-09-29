@@ -1,4 +1,8 @@
-# Python: Tuplas
+# Clase 02: Tuplas
+
+**Duración:** 1 hora
+
+> Los bloques de desarrollo se leen en orden dentro de cada ejemplo. Las plantillas con `...` se completan en las actividades; las cheat sheets reúnen operaciones independientes. Los programas completos incluyen sus imports.
 
 Una **tupla** (*tuple*) es una colección ordenada de elementos similar a una lista.
 
@@ -9,7 +13,7 @@ frutas = ("manzana", "plátano", "cereza")
 print(frutas)
 ```
 
-## Crear tuplas
+### Crear tuplas
 
 ```python
 frutas = ("manzana", "plátano", "cereza")
@@ -19,7 +23,7 @@ numeros = (1, 2, 2, 3, 3, 3)
 print(len(numeros))
 ```
 
-### Tupla de un solo elemento
+#### Tupla de un solo elemento
 
 Necesitas una coma:
 
@@ -41,7 +45,7 @@ frutas = tuple(("manzana", "plátano", "cereza"))
 
 ---
 
-# Acceder a elementos
+## Acceder a elementos
 
 ```python
 frutas = ("manzana", "plátano", "cereza")
@@ -66,7 +70,7 @@ if "manzana" in frutas:
 
 ---
 
-# Las tuplas son inmutables
+## Las tuplas son inmutables
 
 Esto produce un error:
 
@@ -74,7 +78,7 @@ Esto produce un error:
 frutas[1] = "mango"
 ```
 
-Para modificar, puedes convertir temporalmente a lista:
+Para obtener una tupla diferente, puedes convertir temporalmente a lista y crear una nueva tupla. La tupla original no se modifica; se reasigna la variable:
 
 ```python
 frutas = ("manzana", "plátano", "cereza")
@@ -88,7 +92,7 @@ print(frutas)
 
 ---
 
-# Desempaquetar tuplas
+## Desempaquetar tuplas
 
 ```python
 persona = ("Adrian", 42, "México")
@@ -106,14 +110,14 @@ primero, *medio, ultimo = numeros
 
 ---
 
-# Recorrer una tupla
+## Recorrer una tupla
 
 ```python
 for fruta in frutas:
     print(fruta)
 ```
 
-Mediante índices:
+Como alternativa de consulta, mediante índices:
 
 ```python
 for i in range(len(frutas)):
@@ -122,7 +126,7 @@ for i in range(len(frutas)):
 
 ---
 
-# Unir y repetir tuplas
+## Unir y repetir tuplas
 
 ```python
 frontend = ("HTML", "CSS")
@@ -146,7 +150,7 @@ Resultado:
 
 ---
 
-# Métodos de Tuple
+## Métodos de las tuplas
 
 | Método | Uso |
 |---|---|
@@ -162,7 +166,7 @@ print(numeros.index(30))
 
 ---
 
-# Tuple vs List
+## Tuplas y listas
 
 | List | Tuple |
 |---|---|
@@ -178,11 +182,11 @@ Usa una **tupla** cuando representan un conjunto de valores que debería mantene
 
 ---
 
-# Cheat Sheet
+## Cheat sheet
 
 ```python
+un_elemento = (10,)
 tupla = (10, 20, 30)
-tupla = (10,)
 
 len(tupla)
 
@@ -201,6 +205,8 @@ primero, *resto = tupla
 for elemento in tupla:
     print(elemento)
 
+tupla1 = (10, 20)
+tupla2 = (30, 40)
 nueva = tupla1 + tupla2
 nueva = tupla * 2
 
@@ -210,7 +216,7 @@ tupla = tuple(lista)
 
 ---
 
-# 🟡 Ejercicio final — Análisis de temperaturas
+## Ejercicio final: Análisis de temperaturas
 
 ```python
 temperaturas = (
@@ -230,7 +236,7 @@ Crea un programa que:
 7. Recorra la tupla y muestre únicamente temperaturas mayores a `24`.
 8. Convierta la tupla a una lista, agregue una nueva temperatura de `28` y conviértala nuevamente a tupla.
 
-## Output esperado aproximado
+### Salida esperada aproximada
 
 ```text
 Total de registros: 14
@@ -256,3 +262,7 @@ Temperaturas mayores a 24:
 Nueva tupla:
 (22, 24, 21, 25, 27, 27, 23, 20, 22, 24, 27, 26, 21, 27, 28)
 ```
+
+---
+
+[Índice del curso](README.md)

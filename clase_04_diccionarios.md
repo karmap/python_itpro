@@ -1,4 +1,8 @@
-# Python: Diccionarios
+# Clase 04: Diccionarios
+
+**Duración:** 1 a 2 horas
+
+> Los bloques de desarrollo se leen en orden dentro de cada ejemplo. Las plantillas con `...` se completan en las actividades; las cheat sheets reúnen operaciones independientes. Los programas completos incluyen sus imports.
 
 Un **diccionario** (*dictionary*) almacena información en pares de **clave : valor**.
 
@@ -26,7 +30,7 @@ Los diccionarios son útiles para representar datos con una estructura clara: us
 
 ---
 
-# Crear diccionarios
+## Crear diccionarios
 
 ```python
 producto = {
@@ -55,7 +59,7 @@ print(len(usuario))
 
 ---
 
-# Acceder a valores
+## Acceder a valores
 
 Puedes utilizar la clave:
 
@@ -72,8 +76,12 @@ print(usuario.get("nombre"))
 Una diferencia importante es que `get()` puede evitar un error cuando la clave no existe:
 
 ```python
-print(usuario.get("telefono"))
+print(usuario.get("telefono"))  # None
 ```
+
+`None` representa ausencia de valor. `usuario["telefono"]` lanzaría `KeyError`; estudiaremos el manejo de excepciones en la clase 06 y retomaremos `None` en la clase 07.
+
+Puedes elegir otro valor cuando no existe la clave: `usuario.get("telefono", "Sin registrar")`. Ese valor por defecto no agrega la clave al diccionario. Las claves deben ser únicas y hashables, como los números y cadenas de la clase 03; los valores pueden ser listas, diccionarios u otros datos.
 
 También puedes comprobar si una clave existe:
 
@@ -84,7 +92,7 @@ if "edad" in usuario:
 
 ---
 
-# Modificar valores
+## Modificar valores
 
 ```python
 producto = {
@@ -104,7 +112,7 @@ producto.update({"stock": 12})
 
 ---
 
-# Agregar elementos
+## Agregar elementos
 
 Para agregar una nueva clave:
 
@@ -120,7 +128,7 @@ producto.update({"categoria": "Computadoras"})
 
 ---
 
-# Eliminar elementos
+## Eliminar elementos
 
 Con `pop()`:
 
@@ -142,7 +150,7 @@ producto.clear()
 
 ---
 
-# Obtener claves y valores
+## Obtener claves y valores
 
 `keys()` devuelve las claves:
 
@@ -171,7 +179,7 @@ for clave, valor in producto.items():
 
 ---
 
-# Recorrer diccionarios
+## Recorrer diccionarios
 
 Recorrer las claves:
 
@@ -196,7 +204,7 @@ for clave, valor in producto.items():
 
 ---
 
-# Diccionarios anidados
+## Diccionarios anidados
 
 Un diccionario puede contener otros diccionarios:
 
@@ -239,7 +247,7 @@ Esta estructura es muy común al trabajar con APIs, bases de datos y JSON.
 
 ---
 
-# Copiar diccionarios
+## Copiar diccionarios
 
 No es recomendable copiar así:
 
@@ -247,7 +255,7 @@ No es recomendable copiar así:
 copia = producto
 ```
 
-Ambas variables apuntarían al mismo diccionario.
+Ambas variables apuntarían al mismo diccionario. Como vimos con listas, esto crea otra referencia, no una copia.
 
 Utiliza `copy()`:
 
@@ -261,9 +269,11 @@ También puedes usar:
 copia = dict(producto)
 ```
 
+Estas son copias superficiales: los diccionarios o listas anidados siguen compartidos. Para este curso trabajaremos con esa limitación explícita.
+
 ---
 
-# Métodos principales
+## Métodos principales
 
 | Método | Uso |
 |---|---|
@@ -278,7 +288,7 @@ copia = dict(producto)
 
 ---
 
-# List vs Tuple vs Set vs Dictionary
+## Listas, tuplas, conjuntos y diccionarios
 
 | Tipo | Ejemplo | Uso principal |
 |---|---|---|
@@ -289,7 +299,7 @@ copia = dict(producto)
 
 ---
 
-# Cheat Sheet
+## Cheat sheet
 
 ```python
 # Crear
@@ -338,7 +348,7 @@ copia = usuario.copy()
 
 ---
 
-# 🟡 Ejercicio final — Sistema de inventario
+## Ejercicio final: Sistema de inventario
 
 Tienes el siguiente inventario:
 
@@ -375,7 +385,7 @@ Crea un programa que:
 4. Agregue un nuevo producto:
 
 ```python
-"webcam": {
+productos["webcam"] = {
     "precio": 800,
     "stock": 6
 }
@@ -393,7 +403,7 @@ precio × stock
 9. Elimine `"audifonos"` usando `pop()`.
 10. Compruebe si `"monitor"` continúa en el inventario usando `in`.
 
-## Output esperado aproximado
+### Salida esperada aproximada
 
 ```text
 Productos diferentes: 5
@@ -427,3 +437,7 @@ Precio: $15000
 ```
 
 > Nota: el valor total se calcula después de cambiar el precio del mouse y agregar la webcam, pero antes de eliminar audífonos.
+
+---
+
+[Índice del curso](README.md)

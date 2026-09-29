@@ -1,4 +1,8 @@
-# Python: Sets
+# Clase 03: Conjuntos (sets)
+
+**Duración:** 1 hora
+
+> Los bloques de desarrollo se leen en orden dentro de cada ejemplo. Las plantillas con `...` se completan en las actividades; las cheat sheets reúnen operaciones independientes. Los programas completos incluyen sus imports.
 
 Un **set** es una colección de elementos **únicos**, sin un orden fijo y sin índices.
 
@@ -17,7 +21,7 @@ Los sets son útiles cuando queremos:
 
 ---
 
-# Crear Sets
+## Crear conjuntos
 
 ```python
 frutas = {"manzana", "plátano", "cereza"}
@@ -59,7 +63,9 @@ frutas = {}
 
 ---
 
-# Acceder a elementos
+Los elementos de un set deben ser *hashables*: Python debe poder calcular un identificador numérico estable para buscarlos y compararlos. Los números y las cadenas que usamos aquí cumplen ese requisito; las listas y los diccionarios no pueden ser elementos de un set porque su contenido puede cambiar. No necesitas calcular ese identificador ni llamar a `hash()` para trabajar con estos ejemplos.
+
+## Acceder a elementos
 
 Los sets **no tienen índices**, por lo que esto no funciona:
 
@@ -83,7 +89,7 @@ if "manzana" in frutas:
 
 ---
 
-# Agregar elementos
+## Agregar elementos
 
 Usa `add()` para agregar un elemento:
 
@@ -109,7 +115,7 @@ frutas.update(tropicales)
 
 ---
 
-# Eliminar elementos
+## Eliminar elementos
 
 Con `remove()`:
 
@@ -137,11 +143,11 @@ para eliminar todos los elementos.
 
 ---
 
-# Operaciones entre Sets
+## Operaciones entre conjuntos
 
 Los sets permiten comparar y combinar colecciones fácilmente.
 
-## Unión
+### Unión
 
 Combina todos los elementos sin duplicados:
 
@@ -162,7 +168,7 @@ stack = frontend | backend
 
 ---
 
-## Intersección
+### Intersección
 
 Obtiene los elementos presentes en ambos sets:
 
@@ -186,7 +192,7 @@ Resultado:
 
 ---
 
-## Diferencia
+### Diferencia
 
 Obtiene los elementos que existen en el primer set pero no en el segundo:
 
@@ -202,7 +208,7 @@ solo_frontend = frontend - backend
 
 ---
 
-## Diferencia simétrica
+### Diferencia simétrica
 
 Obtiene los elementos que están en un set u otro, pero **no en ambos**:
 
@@ -218,7 +224,7 @@ diferentes = frontend ^ backend
 
 ---
 
-# Set vs List vs Tuple
+## Conjuntos, listas y tuplas
 
 | Tipo | Sintaxis | Orden | Duplicados | Modificable |
 |---|---|---|---|---|
@@ -228,7 +234,7 @@ diferentes = frontend ^ backend
 
 ---
 
-# Métodos principales
+## Métodos principales
 
 | Método | Uso |
 |---|---|
@@ -244,7 +250,7 @@ diferentes = frontend ^ backend
 
 ---
 
-# Cheat Sheet
+## Cheat sheet
 
 ```python
 # Crear
@@ -272,6 +278,8 @@ for dato in datos:
     print(dato)
 
 # Operaciones
+a = {1, 2}
+b = {2, 3}
 a | b    # unión
 a & b    # intersección
 a - b    # diferencia
@@ -284,7 +292,7 @@ unicos = set(numeros)
 
 ---
 
-# 🟡 Ejercicio final — Comparación de usuarios
+## Ejercicio final: Comparación de usuarios
 
 Dos aplicaciones tienen las siguientes listas de usuarios:
 
@@ -314,12 +322,12 @@ Crea un programa que:
 8. Agregue `"adrian"` a App A usando `add()`.
 9. Intente eliminar `"roberto"` de App B sin provocar un error.
 
-Puedes utilizar:
+Referencia de operaciones (elige sus argumentos según el ejercicio):
 
-```python
-set()
-len()
-add()
+```text
+set(iterable)
+len(conjunto)
+conjunto.add(elemento)
 discard()
 union()
 intersection()
@@ -332,9 +340,9 @@ symmetric_difference()
 ^
 ```
 
-## Output esperado
+### Salida esperada
 
-El orden puede variar porque los sets no mantienen un orden fijo.
+El orden puede variar porque los sets no mantienen un orden fijo. La salida siguiente corresponde a los pasos 1 a 7, antes de agregar `"adrian"`. Tras el paso 8, App A tiene 9 usuarios únicos; `discard("roberto")` no cambia App B.
 
 ```text
 Usuarios únicos App A: 8
@@ -357,3 +365,7 @@ En una aplicación pero no en ambas:
 {'ana', 'carlos', 'diego', 'fernando',
  'jorge', 'elena', 'raul', 'monica'}
 ```
+
+---
+
+[Índice del curso](README.md)
