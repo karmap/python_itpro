@@ -85,7 +85,7 @@ API → JSON → Python
 | Query parameters | Filtros o ajustes escritos después de `?` en la URL. |
 | Body o cuerpo | Los datos enviados, por ejemplo un producto en un POST. |
 
-En `https://ejemplo.com/products?min_price=100&in_stock=true`, `ejemplo.com` es el servidor, `/products` la ruta y lo que sigue a `?` son parámetros separados por `&`. La respuesta incluye un código de estado, cabeceras y, cuando corresponde, un cuerpo.
+Una URL completa incluye el protocolo, el servidor y la ruta del recurso. En `/products?min_price=100&in_stock=true`, `/products` es la ruta y lo que sigue a `?` son parámetros separados por `&`. La respuesta incluye un código de estado, cabeceras y, cuando corresponde, un cuerpo.
 
 Una petición HTTP normalmente contiene:
 
@@ -134,6 +134,8 @@ Regla rápida:
 ---
 
 ## 3. Primer request con Python
+
+Usaremos JSONPlaceholder, una API de prueba con usuarios, comentarios y publicaciones. En los ejemplos de código, `requests` recibe la URL completa del recurso.
 
 `requests.get()` devuelve un objeto `Response`. Sus atributos contienen datos y sus métodos realizan operaciones:
 
@@ -207,13 +209,13 @@ list[dict]
 
 ## 4. Parámetros de query
 
-Ejemplo:
+Ejemplo de ruta con un parámetro de query:
 
 ```text
-https://jsonplaceholder.typicode.com/comments?postId=1
+/comments?postId=1
 ```
 
-Con `requests`:
+Con `requests`, usamos la URL completa y enviamos los parámetros mediante `params`:
 
 ```python
 params = {
@@ -378,7 +380,7 @@ def obtener_usuarios() -> list[dict]:
 
 Debe:
 
-1. Hacer un `GET` a `https://jsonplaceholder.typicode.com/users`.
+1. Hacer un `GET` a la ruta `/users` de la API utilizada en los ejemplos anteriores.
 2. Utilizar `timeout`.
 3. Utilizar `raise_for_status()`.
 4. Convertir la respuesta a Python.
@@ -488,11 +490,13 @@ La IA puede interpretar el significado del texto.
 
 ## 9. OpenRouter
 
-Endpoint:
+Endpoint de OpenRouter:
 
 ```text
-https://openrouter.ai/api/v1/chat/completions
+POST /api/v1/chat/completions
 ```
+
+La ruta identifica el recurso dentro de OpenRouter. El siguiente ejemplo utiliza su URL completa para enviar la petición.
 
 Router gratuito:
 

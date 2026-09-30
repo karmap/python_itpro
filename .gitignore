@@ -9,3 +9,6 @@ __pycache__/
 *.db
 *.db-shm
 *.db-wal
+
+# Prompt privado y soluciones generadas para comparar modelos.
+/.proyecto_final_llm/

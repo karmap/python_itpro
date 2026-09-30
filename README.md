@@ -23,7 +23,7 @@ No es necesario instalar todo desde la primera clase: cada documento indica las 
 
 ## Contenido
 
-Este índice reúne los fundamentos de Python y su aplicación a programas con APIs, IA y persistencia. Los archivos siguen el patrón `clase_NN_tema.md`, con numeración continua del 01 al 12.
+Este índice reúne los fundamentos de Python y su aplicación a programas con APIs, IA y persistencia. Las clases siguen el patrón `clase_NN_tema.md`, con numeración continua del 01 al 12. El proyecto final tiene su propio documento al final del índice.
 
 ### 1. [Listas](clase_01_listas.md)
 
@@ -75,17 +75,9 @@ Modelos, engine, sesiones y operaciones para guardar, consultar y eliminar produ
 
 Esta clase es obligatoria antes del proyecto final con SQLite.
 
-El documento del proyecto final todavía no está disponible; se añadirá al final del índice cuando se incorpore al repositorio.
+### 13. [Proyecto final: Planificador de viajes con historial](proyecto_final.md)
 
-## Proyecto final
-
-La propuesta es **AI Trip Planner**: una consola interactiva envía una ciudad, duración e interés a FastAPI mediante `requests`. La API valida la entrada, consulta OpenRouter, valida el resultado y guarda tanto la consulta como la respuesta en SQLite con SQLModel.
-
-La consola permitirá crear un plan, consultar el historial, ver una consulta por ID y eliminarla. El proyecto integra funciones, módulos, type hints, excepciones, JSON, HTTP, modelos y persistencia.
-
-Las clases 08, 09, 11 y 12 cubren la API key mediante variables de entorno, la validación de la salida de IA y el almacenamiento de su estructura JSON. El proyecto se puede desarrollar en tres sesiones de 1 a 2 horas: consola/API, integración con IA y persistencia/historial.
-
-**Documento completo pendiente de incorporación.** Su enlace se agregará cuando exista el archivo correspondiente.
+Cliente de consola que crea y consulta planes de viaje mediante FastAPI, OpenRouter y SQLite. Incluye datos de entrada y salida, rutas, errores y criterios de entrega.
 
 ## Progresión del curso
 

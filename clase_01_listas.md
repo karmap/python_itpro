@@ -4,8 +4,6 @@
 
 > Los bloques de desarrollo se leen en orden dentro de cada ejemplo. Las plantillas con `...` se completan en las actividades; las cheat sheets reúnen operaciones independientes. Los programas completos incluyen sus imports.
 
-> Material de estudio en español inspirado en la progresión temática de W3Schools, reescrito y ampliado con ejemplos y ejercicios propios.
-
 ### Objetivos
 
 Al terminar esta sección podrás:
@@ -862,14 +860,6 @@ lista1.extend(lista2)
 6. ¿Qué hace `extend()`?
 7. ¿Para qué sirve una *list comprehension*?
 8. ¿Cómo accederías al último elemento sin conocer la longitud de la lista?
-
----
-
-### Referencia
-
-Estructura temática basada en la sección **Python Lists** de W3Schools:
-
-https://www.w3schools.com/python/python_lists.asp
 
 ---
 

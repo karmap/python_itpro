@@ -459,7 +459,7 @@ with Session(engine) as session:
         session.commit()
 ```
 
-Siguiente paso: AI Trip Planner, integrando la consola, FastAPI, validación de entrada y salida de IA, y un historial persistente. Su documento se incorporará al índice cuando esté disponible.
+Siguiente paso: [Proyecto final: Planificador de viajes con historial](proyecto_final.md), integrando la consola, FastAPI, validación de entrada y salida de IA, y un historial persistente.
 
 ---
 
